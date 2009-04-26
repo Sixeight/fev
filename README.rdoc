@@ -1,0 +1,32 @@
+= Fev
+
+== DESCRIPTION:
+
+Fev is a very simple file server.
+
+== FEATURES:
+
+== SYNOPSIS:
+
+Run with uploader
+
+  ruby fev.rb direcroty
+
+Run without uploader
+
+  ruby fev.rb --disable-upload directory
+
+== REQUIREMENTS:
+
+* sinatra
+* haml
+
+Install:
+
+  sudo gem install sinatra haml
+
+== TODO:
+
+* Search
+* Sort
+
