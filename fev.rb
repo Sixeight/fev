@@ -19,6 +19,10 @@ set :total_size, lambda { files.inject(0) {|total, file| File.size(file) + total
 set :max_length, lambda { files.map {|e| File.basename(e).size }.max }
 set :upload, upload.nil?
 
+not_found do
+  haml "%h2 404 not found\n%p Sorry. There is no such file in this server."
+end
+
 template :layout do
   <<-EOS
 !!! Strict
