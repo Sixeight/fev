@@ -3,14 +3,14 @@
 
 upload = ARGV.delete('--disable-upload')
 
+require 'rubygems'
+require 'sinatra'
+
 directory = ARGV.last
 unless directory && File.exist?(directory)
   warn "'#{directory}' doen't exist"
   exit 1
 end
-
-require 'rubygems'
-require 'sinatra'
 
 set :environment, :production
 set :public, File.expand_path(directory)
