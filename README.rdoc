@@ -2,7 +2,7 @@
 
 == DESCRIPTION:
 
-Fev is a very simple file server.
+Fev is a very simple local file server.
 
 == FEATURES:
 
