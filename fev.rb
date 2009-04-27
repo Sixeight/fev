@@ -3,15 +3,17 @@
 
 unless defined? FEV_RUN
   require 'optparse'
-  upload = true
+  upload   = true
+  password = nil
   tmp_argv = []
   remain =
     OptionParser.new {|opt|
-      opt.on('-x', 'turn on the mutex lock (default is off)')               {    tmp_argv << '-x' }
       opt.on('-e env', 'set the environment (default is production)')       {|v| tmp_argv << '-e' << v }
       opt.on('-s server', 'specify rack server/handler (default is thin)')  {|v| tmp_argv << '-s' << v }
       opt.on('-p port', 'set the port (default 4567)')                      {|v| tmp_argv << '-p' << v }
-      opt.on('--disable-upload', 'run without uploader')                    { upload = false }
+      opt.on('-l', '--lock=pass', 'set the password')                       {|v| password = v }
+      opt.on('--disable-upload', 'run without uploader')                    {    upload = false }
+      opt.on('-x', 'turn on the mutex lock (default is off)')               {    tmp_argv << '-x' }
     }.parse!(ARGV)
 
   ARGV = tmp_argv
@@ -32,6 +34,9 @@ unless defined? FEV_RUN
   set :total_size, lambda { files.inject(0) {|total, file| File.size(file) + total } }
   set :max_length, lambda { files.map {|e| File.basename(e).size }.max }
   set :upload, upload
+  set :password, password
+
+  enable :sessions
 
   FEV_RUN = true
 end
@@ -46,7 +51,7 @@ template :layout do
 %html
   %head
     %meta{ :'http-equiv' => 'Content-Type', :content => 'text/html', :charset => 'utf-8' }
-    %link{ :rel => 'stylesheet', :type => 'text/css', :href => 'css/application.css' }
+    %link{ :rel => 'stylesheet', :type => 'text/css', :href => '/css/application.css' }
     %title Fev
   %body
     #header
@@ -109,6 +114,12 @@ li span.fsize
   EOS
 end
 
+before do
+  unless %w[ /login /css/application.css ].include? request.path_info
+    redirect 'login' if options.password && !session[options.password.to_sym]
+  end
+end
+
 get '/' do
   haml(<<-'EOS', :locals => { :cycle => cyclize('odd', 'even') })
 - if options.upload
@@ -142,6 +153,23 @@ post '/' do
       io.write file[:tempfile].read
     end
   end
+  redirect '/'
+end
+
+get '/login' do
+  haml <<-EOS
+#login
+  %form{ :action => '/login', :method => 'post' }
+    %input{ :name => 'pass' }
+    %input{ :type => 'submit', :value => 'login' }
+  EOS
+end
+
+post '/login' do
+  unless params[:pass] == options.password
+    redirect '/login'
+  end
+  session[options.password.to_sym] = true
   redirect '/'
 end
 
