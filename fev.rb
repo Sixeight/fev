@@ -1,23 +1,40 @@
 #! /usr/bin/env ruby
 # -"- coding: utf-8 -*-
 
-upload = ARGV.delete('--disable-upload')
+unless defined? FEV_RUN
+  require 'optparse'
+  upload = true
+  tmp_argv = []
+  remain =
+    OptionParser.new {|opt|
+      opt.on('-x', 'turn on the mutex lock (default is off)')               {    tmp_argv << '-x' }
+      opt.on('-e env', 'set the environment (default is production)')       {|v| tmp_argv << '-e' << v }
+      opt.on('-s server', 'specify rack server/handler (default is thin)')  {|v| tmp_argv << '-s' << v }
+      opt.on('-p port', 'set the port (default 4567)')                      {|v| tmp_argv << '-p' << v }
+      opt.on('--disable-upload', 'run without uploader')                    { upload = false }
+    }.parse!(ARGV)
 
-require 'rubygems'
-require 'sinatra'
+  ARGV = tmp_argv
 
-directory = ARGV.last
-unless directory && File.exist?(directory)
-  warn "'#{directory}' doen't exist"
-  exit 1
+  require 'rubygems'
+  require 'sinatra'
+
+  directory = remain.last
+  unless directory && File.exist?(directory)
+    warn "'#{directory}' doen't exist"
+    exit 1
+  end
+
+  set :environment, :production unless ARGV.include?('-e')
+  set :public, File.expand_path(directory)
+  set :directory, directory
+  set :files, lambda { Dir["#{directory}/*"].select {|f| !File.directory?(f) && !File.symlink?(f) } }
+  set :total_size, lambda { files.inject(0) {|total, file| File.size(file) + total } }
+  set :max_length, lambda { files.map {|e| File.basename(e).size }.max }
+  set :upload, upload
+
+  FEV_RUN = true
 end
-
-set :environment, :production
-set :public, File.expand_path(directory)
-set :files, lambda { Dir["#{directory}/*"].select {|f| !File.directory?(f) && !File.symlink?(f) } }
-set :total_size, lambda { files.inject(0) {|total, file| File.size(file) + total } }
-set :max_length, lambda { files.map {|e| File.basename(e).size }.max }
-set :upload, upload.nil?
 
 not_found do
   haml "%h2 404 not found\n%p Sorry. There is no such file in this server."
