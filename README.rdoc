@@ -10,11 +10,17 @@ Fev is a very simple local file server.
 
 Run with uploader
 
-  ruby fev.rb direcroty
+  ruby fev.rb <direcroty>
 
 Run without uploader
 
-  ruby fev.rb --disable-upload directory
+  ruby fev.rb --disable-upload <directory>
+
+Run with authentication
+
+  ruby fec.rb --lock=<password> <directory>
+
+and you can see more help on --help
 
 == REQUIREMENTS:
 
@@ -24,6 +30,13 @@ Run without uploader
 Install:
 
   sudo gem install sinatra haml
+
+== TIPS:
+
+You should do that fev moves to your utilitie directory. And add permission x to fev.
+Then you can use fev like below:
+
+  fev path/to/want/publish
 
 == TODO:
 
