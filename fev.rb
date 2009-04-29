@@ -8,12 +8,12 @@ unless defined? FEV_RUN
   tmp_argv = []
   remain =
     OptionParser.new {|opt|
-      opt.on('-e env', 'set the environment (default is production)')       {|v| tmp_argv << '-e' << v }
-      opt.on('-s server', 'specify rack server/handler (default is thin)')  {|v| tmp_argv << '-s' << v }
+      opt.on('-e env', 'set the environment (default production)')       {|v| tmp_argv << '-e' << v }
+      opt.on('-s server', 'specify rack server/handler (default thin)')  {|v| tmp_argv << '-s' << v }
       opt.on('-p port', 'set the port (default 4567)')                      {|v| tmp_argv << '-p' << v }
       opt.on('-l', '--lock=pass', 'set the password')                       {|v| password = v }
       opt.on('--disable-upload', 'run without uploader')                    {    upload = false }
-      opt.on('-x', 'turn on the mutex lock (default is off)')               {    tmp_argv << '-x' }
+      opt.on('-x', 'turn on the mutex lock (default off)')               {    tmp_argv << '-x' }
     }.parse!(ARGV)
 
   ARGV = tmp_argv
