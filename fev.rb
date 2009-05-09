@@ -20,6 +20,8 @@ unless defined? FEV_RUN
 
   require 'rubygems'
   require 'sinatra'
+  require 'haml'
+  require 'sass'
 
   directory = remain.last
   unless directory && File.exist?(directory)
