@@ -8,13 +8,13 @@ Fev is a very simple local file server.
 
 == SYNOPSIS:
 
-Run with uploader
+Run without uploader
 
   ruby fev.rb <direcroty>
 
-Run without uploader
+Run with uploader
 
-  ruby fev.rb --disable-upload <directory>
+  ruby fev.rb --unable-upload <directory>
 
 Run with authentication
 
