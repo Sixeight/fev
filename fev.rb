@@ -81,37 +81,37 @@ h1
 h3
   :margin-bottom 5px
   :font-weight normal
-ul
-  :margin-top 0
-  :margin-left 5px
-  :padding 0
-li
-  :margin-top 10px
-  :padding-left 10px
-  :list-style-type none
-  :color #333
 a
   :text-decoration none
   :color #333
-a:hover
-  :color white
-  :background-color black
+  &:hover
+    :color white
+    :background-color black
 span.prefix
   :padding-right 10px
   :color black
   :font-weight bold
-li.even
-  :background-color #ddd
-li:hover
-  :margin-left -5px
-  :border-left 5px solid black
-li span.fname
-  :display inline-block
-  :width #{options.max_length}em
-li span.fsize
-  :display inline-block
-  :width 4.5em
-  :text-align right
+ul
+  :margin-top 0
+  :margin-left 5px
+  :padding 0
+  li
+    :margin-top 10px
+    :padding-left 10px
+    :list-style-type none
+    :color #333
+    &.even
+      :background-color #ddd
+    &:hover
+      :margin-left -5px
+      :border-left 5px solid black
+    span.fname
+      :display inline-block
+      :width #{options.max_length}em
+    span.fsize
+      :display inline-block
+      :width 4.5em
+      :text-align right
 #footer
   :margin-top 20px
   EOS
