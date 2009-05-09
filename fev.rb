@@ -48,7 +48,7 @@ not_found do
 end
 
 template :layout do
-  <<-EOS
+  <<-'EOS'
 !!! XML
 !!! Strict
 %html{ :xmlns => 'http://www.w3.org/1999/xhtml' }
@@ -58,7 +58,7 @@ template :layout do
     %title Fev
   %body
     #header
-      %h1 Fev
+      %h1== #{File.basename(options.public)}/
     #contents
       =yield
     #footer
@@ -131,7 +131,7 @@ get '/' do
       %input#filename{ :name => 'file', :size => 20, :type => 'file' }
       %input{ :type => 'submit', :value => 'upload' }
 #list
-  %h3= options.public
+  %h3== in #{options.public}
   - if options.files.empty?
     %p There are no files.
   - else
