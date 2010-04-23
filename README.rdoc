@@ -14,7 +14,7 @@ Run without uploader
 
 Run with uploader
 
-  ruby fev.rb --unable-upload <directory>
+  ruby fev.rb --eable-upload <directory>
 
 Run with authentication
 
